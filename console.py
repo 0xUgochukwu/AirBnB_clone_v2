@@ -129,8 +129,11 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         for item in args[1:]:
             key, value = item.split("=")
-            value = value.replace('_', ' ')
-            value = value[1:-1].replace('"', '\"')
+            if '"' in value:
+                if '"' in value[1:-1]:
+                    value = value[1:-1].replace('"', '\"')
+                    print(value)
+                value = value.replace('_', ' ')
             line = f"update {args[0]} {new_instance.id} {key} {value}"
             cmd.Cmd.onecmd(self, line)
 
