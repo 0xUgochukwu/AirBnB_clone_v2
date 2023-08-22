@@ -20,7 +20,7 @@ class FileStorage:
 
     def delete(self, obj=None):
         if obj is None:
-            return
+            pass
         for key, value in self.__objects.items():
             if obj == value:
                 del self.__objects[key]
