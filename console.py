@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
         storage.save()
         for item in args[1:]:
-            [key, value] = item.split("=")
+            key, value = item.split("=")
             line = f"update {args[0]} {new_instance.id} {key} {value}"
             cmd.Cmd.onecmd(self, line)
 
