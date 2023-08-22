@@ -127,8 +127,9 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         storage.save()
-        for key in args[1:]:
-            cmd.Cmd.onecmd(self, f"update {args[0]} {new_instance.id} {key.replace('=', ' ')}")
+        for item in args[1:]:
+            [key, value] = item.split("=")
+            cmd.Cmd.onecmd(self, f"update {args[0]} {new_instance.id} {key} {value.replace('_', ' ')}")
 
     def help_create(self):
         """ Help information for the create method """
