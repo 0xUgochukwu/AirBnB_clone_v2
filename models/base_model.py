@@ -18,21 +18,25 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         self.id = str(uuid.uuid4())
-        from models import storage
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != '__class__':
-                    if key in ('created_at', 'updated_at'):
-                        setattr(self, key, datetime.fromisoformat(value))
-                    else:
-                        setattr(self, key, value)
+
+        for key, value in kwargs.items():
+            if key != '__class__':
+                if key in ('created_at', 'updated_at'):
+                    setattr(self, key, datetime.fromisoformat(value))
+                else:
+                    setattr(self, key, value)
 
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+
+    def delete(self):
+        """Deletes this BaseModel instance from the storage"""
+        from models import storage
+        storage.delete(self)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -43,12 +47,12 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        data = self.__dict__.copy()
-        data['__class__'] = self.__class__.__name__
-        data['created_at'] = self.created_at.isoformat()
-        data['updated_at'] = self.updated_at.isoformat()
-
-        if hasattr(self, '_sa_instance_state'):
-            del data['_sa_instance_state']
-
-        return data
+        res = {}
+        for key, value in self.__dict__.items():
+            if key != '_sa_instance_state':
+                if isinstance(value, datetime):
+                    res[key] = value.isoformat()
+                else:
+                    res[key] = value
+        res['__class__'] = self.__class__.__name__
+        return res
