@@ -9,7 +9,7 @@ then
 fi
 
 sudo mkdir -p /data/web_static/shared/ /data/web_static/releases/test/
-echo 'HBNB is coming!' > /data/web_static/releases/test/index.html
+echo 'HBNB is coming!' | sudo tee /data/web_static/releases/test/index.html
 ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -hR ubuntu:ubuntu /data/
 
