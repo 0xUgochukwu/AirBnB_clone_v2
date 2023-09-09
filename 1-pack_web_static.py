@@ -6,6 +6,7 @@ from fabric.api import runs_once, local
 
 @runs_once
 def do_pack():
+    """ Archives web_static """
     if os.path.exists('versions') or os.mkdir('versions'):
         timestamp = datetime.now()
         out_path = "versions/web_static_{}{}{}{}{}{}.tgz".format(
