@@ -12,7 +12,7 @@ def do_deploy(archive_path):
     if not os.path.exists(archive_path):
         return False
     filename = archive_path.split('/')[1]
-    filepath = f"/data/web_static/releases/{filename.replace('.tgz', '')}/"
+    filepath = "/data/web_static/releases/{}/".format(filename.replace('.tgz', ''))
     try:
         put(archive_path, "/tmp/")
         run(f"mkdir -p {filepath}")
