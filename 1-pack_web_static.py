@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 from fabric.api import runs_once, local
 
+
 @runs_once
 def do_pack():
     """ Archives web_static """
@@ -21,8 +22,8 @@ def do_pack():
         try:
             print("Packing web_static to {}".format(out_path))
             local("tar -cvzf {} web_static".format(out_path))
-            archize_size = os.stat(output).st_size
-            print("web_static packed: {} -> {} Bytes".format(out_path, archize_size))
+            size = os.stat(output).st_size
+            print("web_static packed: {} -> {} Bytes".format(out_path, size))
         except Exception:
             out_path = None
 
