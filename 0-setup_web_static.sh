@@ -7,7 +7,7 @@ then
 	sudo apt-get -y nginx
 fi
 
-sudo mkdir /data/web_static/shared/ /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/ /data/web_static/releases/test/
 echo 'HBNB is coming!' > /data/web_static/releases/test/index.html
 ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -hR ubuntu:ubuntu /data/
