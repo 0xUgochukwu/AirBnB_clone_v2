@@ -1,27 +1,29 @@
 #!/usr/bin/python3
 """ Deploymwnt Module """
-import os
+import os.path
 from fabric.api import run, env, put
+
 
 env.hosts = ['54.152.30.192', '54.144.155.174']
 
 
 def do_deploy(archive_path):
-    """Deploys the static files to the host servers."""
-
-    if not os.path.exists(archive_path):
+    '''Upload achive to web servers'''
+    if not os.path.isfile(archive_path):
         return False
-    filename = archive_path.split('/')[1]
-    filepath = "/data/web_static/releases/{}/".format(filename.replace('.tgz', ''))
     try:
-        put(archive_path, "/tmp/")
-        run(f"mkdir -p {filepath}")
-        run(f"tar -xzf /tmp/{filename} -C {filepath}")
-        run(f"rm /tmp/{filename}")
-        run(f"mv {filepath}web_static/* {filepath}")
-        run(f"rm -rf {filepath}web_static")
-        run(f"rm -rf /data/web_static/current")
-        run(f"ln -s {filepath} /data/web_static/current")
+        filename = archive_path.split('/')[-1]
+        no_ext = filename.split('.')[0]
+        path_no_ext = '/data/web_static/releases/{}/'.format(no_ext)
+        symlink = '/data/web_static/current'
+        put(archive_path, '/tmp/')
+        run('mkdir -p {}'.format(path_no_ext))
+        run('tar -xzf /tmp/{} -C {}'.format(filename, path_no_ext))
+        run('rm /tmp/{}'.format(filename))
+        run('mv {}web_static/* {}'.format(path_no_ext, path_no_ext))
+        run('rm -rf {}web_static'.format(path_no_ext))
+        run('rm -rf {}'.format(symlink))
+        run('ln -s {} {}'.format(path_no_ext, symlink))
         return True
     except Exception:
         return False
