@@ -14,7 +14,9 @@ app.url_map.strict_slashes = False
 def cities_by_states():
     """ List all the states """
     states = sorted(list(storage.all(State).values()), key=lambda s: s.name)
-    return render_template('7-states_list.html', states=states)
+    for state in states:
+        state.cities.sort(key=lambda c: c.name)
+    return render_template('8-cities_by_states.html', states=states)
 
 
 @app.teardown_appcontext
