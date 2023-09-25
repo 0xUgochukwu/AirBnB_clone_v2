@@ -10,8 +10,8 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 
-@app.route('/states_list')
-def lists_states():
+@app.route('/cities_by_states', strict_slashes=False)
+def cities_by_states():
     """ List all the states """
     states = sorted(list(storage.all(State).values()), key=lambda s: s.name)
     return render_template('7-states_list.html', states=states)
